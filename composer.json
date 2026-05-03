@@ -48,7 +48,8 @@
             "@php artisan key:generate",
             "@php artisan migrate --force",
             "npm install",
-            "npm run build"
+            "npm run build",
+            "git config core.hooksPath .githooks"
         ],
         "dev": [
             "Composer\\Config::disableProcessTimeout",
@@ -75,6 +76,10 @@
         "post-autoload-dump": [
             "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
             "@php artisan package:discover --ansi"
+        ],
+        "post-install-cmd":[
+             "git config core.hooksPath .githooks",
+             "chmod +x .githooks/pre-commit .githooks/pre-push"
         ],
         "post-update-cmd": [
             "@php artisan vendor:publish --tag=laravel-assets --ansi --force"

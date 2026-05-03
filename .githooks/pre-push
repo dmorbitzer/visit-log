@@ -1,0 +1,17 @@
+#!/bin/sh
+
+echo "Running PHP tests..."
+php artisan test
+if [ $? -ne 0 ]; then
+    echo "Tests failed. Please fix the failing tests before pushing."
+    exit 1
+fi
+
+echo "Running frontend type check..."
+npm run types:check
+if [ $? -ne 0 ]; then
+    echo "TypeScript type check failed. Please fix the errors before pushing."
+    exit 1
+fi
+
+exit 0
