@@ -1,4 +1,3 @@
-cat > .githooks/pre-push << 'EOF'
 #!/bin/sh
 
 echo "Running PHP tests..."
@@ -16,5 +15,3 @@ if [ $? -ne 0 ]; then
 fi
 
 exit 0
-EOF
-chmod +x .githooks/pre-push
