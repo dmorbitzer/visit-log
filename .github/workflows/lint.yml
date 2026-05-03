@@ -5,14 +5,10 @@ on:
     branches:
       - develop
       - main
-      - master
-      - workos
   pull_request:
     branches:
       - develop
       - main
-      - master
-      - workos
 
 permissions:
   contents: write
@@ -31,19 +27,14 @@ jobs:
       - name: Install Dependencies
         run: |
           composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
-          npm install
+          npm install --legacy-peer-deps
 
       - name: Run Pint
-        run: composer lint
+        run: composer lint:check
 
       - name: Format Frontend
         run: npm run format
 
       - name: Lint Frontend
         run: npm run lint
-
-      # - name: Commit Changes
-      #   uses: stefanzweifel/git-auto-commit-action@v7
-      #   with:
-      #     commit_message: fix code style
-      #     commit_options: '--no-verify'
+        

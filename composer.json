@@ -1,15 +1,18 @@
 {
     "$schema": "https://getcomposer.org/schema.json",
-    "name": "laravel/react-starter-kit",
+    "name": "dmorbitzer/visit-log",
     "type": "project",
-    "description": "The skeleton application for the Laravel framework.",
+    "description": "A digital visitor tracking system for events and venues.",
     "keywords": [
         "laravel",
-        "framework"
+        "inertia",
+        "react",
+        "tracking",
+        "visitors"
     ],
     "license": "MIT",
     "require": {
-        "php": "^8.3",
+        "php": "^8.4",
         "inertiajs/inertia-laravel": "^3.0",
         "laravel/fortify": "^1.34",
         "laravel/framework": "^13.7",
