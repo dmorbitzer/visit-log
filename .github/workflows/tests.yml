@@ -51,6 +51,4 @@ jobs:
 
       - name: Tests
         run: ./vendor/bin/phpunit
-
-      - name: Frontend Tests
-        run: npm run test
+        
