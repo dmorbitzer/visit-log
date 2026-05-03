@@ -1,0 +1,27 @@
+cat > .githooks/pre-commit << 'EOF'
+#!/bin/sh
+
+echo "Running PHP linting..."
+composer run lint:check
+if [ $? -ne 0 ]; then
+    echo "PHP linting failed. Please fix the errors before committing."
+    exit 1
+fi
+
+echo "Running frontend linting..."
+npm run lint:check
+if [ $? -ne 0 ]; then
+    echo "Frontend linting failed. Please fix the errors before committing."
+    exit 1
+fi
+
+echo "Running frontend format check..."
+npm run format:check
+if [ $? -ne 0 ]; then
+    echo "Frontend formatting failed. Run 'npm run format' to fix."
+    exit 1
+fi
+
+exit 0
+EOF
+chmod +x .githooks/pre-commit
