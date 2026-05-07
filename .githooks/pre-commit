@@ -1,7 +1,10 @@
 #!/bin/sh
 
+export COLUMNS=$(tput cols)
+export LINES=$(tput lines)
+
 echo "Running PHP linting..."
-composer run lint:check
+composer run lint:check --verbose
 if [ $? -ne 0 ]; then
     echo "PHP linting failed. Please fix the errors before committing."
     exit 1
