@@ -14,8 +14,8 @@ return new class extends Migration
         Schema::create('event_user', function (Blueprint $table) {
             $table->id();
             $table->foreignId('event_id');
-            $table->date('date');
-            $table->text('notes')->nullable();
+            $table->foreignId('user_id');
+            $table->string('permission');
             $table->timestamps();
 
             $table->unique(['event_id', 'user_id']);
