@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('tracking_days', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('event_id');
+            $table->foreignId('event_id')->constrained()->onDelete('cascade');
             $table->date('date');
             $table->text('notes')->nullable();
             $table->timestamps();

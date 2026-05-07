@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('time_slots', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('tracking_day_id');
+            $table->foreignId('tracking_day_id')->constrained()->onDelete('cascade');
             $table->time('slot_start');
             $table->time('slot_end');
             $table->unsignedInteger('visitor_count')->default(0);
