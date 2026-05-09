@@ -1,5 +1,5 @@
 import { Link } from '@inertiajs/react';
-import { CalendarDays, LayoutGrid } from 'lucide-react';
+import { CalendarDays } from 'lucide-react';
 import AppLogo from '@/components/app-logo';
 import { NavMain } from '@/components/nav-main';
 import { NavUser } from '@/components/nav-user';
@@ -12,7 +12,6 @@ import {
     SidebarMenuButton,
     SidebarMenuItem,
 } from '@/components/ui/sidebar';
-import { dashboard } from '@/routes';
 import { index as eventsIndex } from '@/routes/events';
 import type { NavItem } from '@/types';
 
@@ -21,11 +20,6 @@ const mainNavItems: NavItem[] = [
         title: 'Events',
         href: eventsIndex(),
         icon: CalendarDays,
-    },
-    {
-        title: 'Dashboard',
-        href: dashboard(),
-        icon: LayoutGrid,
     },
 ];
 

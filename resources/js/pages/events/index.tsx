@@ -1,6 +1,8 @@
 import { Head } from '@inertiajs/react';
 import { router } from '@inertiajs/react';
+import { Link } from '@inertiajs/react';
 import { Settings } from 'lucide-react';
+import { Plus } from 'lucide-react';
 import { useState } from 'react';
 import EventConfig from '@/components/event-config';
 import { Badge } from '@/components/ui/badge';
@@ -16,6 +18,7 @@ import {
 } from '@/components/ui/sheet';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { show as eventShow } from '@/routes/events';
+import { create as eventsCreate } from '@/routes/events';
 import type { Event } from '@/types/event';
 
 type Props = {
@@ -31,6 +34,15 @@ export default function EventsIndex({ activeEvents, archivedEvents }: Props) {
             <div className="flex flex-col gap-6 p-6">
                 <div className="flex items-center justify-between">
                     <h1 className="text-2xl font-medium">Events</h1>
+                    <Link href={eventsCreate()}>
+                        <Button
+                            size="icon"
+                            variant="ghost"
+                            className="cursor-pointer"
+                        >
+                            <Plus className="size-5" />
+                        </Button>
+                    </Link>
                 </div>
 
                 <Tabs defaultValue="active">
@@ -122,7 +134,7 @@ function EventCard({
                         <Badge
                             className={
                                 event.status === 'active'
-                                    ? 'border-blue-500 bg-blue-500 text-white'
+                                    ? 'border-primary bg-primary text-white'
                                     : ''
                             }
                             variant={

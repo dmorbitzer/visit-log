@@ -89,7 +89,7 @@ export default function EventsShow({ event }: Props) {
                         <Badge
                             className={
                                 event.status === 'active'
-                                    ? 'border-blue-500 bg-blue-500 text-white'
+                                    ? 'border-primary bg-primary text-white'
                                     : ''
                             }
                             variant={
