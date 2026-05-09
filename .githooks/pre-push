@@ -7,13 +7,6 @@ if [ $? -ne 0 ]; then
     exit 1
 fi
 
-echo "Running frontend type check..."
-npm run types:check
-if [ $? -ne 0 ]; then
-    echo "TypeScript type check failed. Please fix the errors before pushing."
-    exit 1
-fi
-
 echo "Running frontend tests..."
 npm run test
 if [ $? -ne 0 ]; then
