@@ -1,5 +1,8 @@
 <?php
 
+use Laravel\Fortify\Actions\AttemptToAuthenticate;
+use Laravel\Fortify\Actions\EnsureLoginIsNotThrottled;
+use Laravel\Fortify\Actions\PrepareAuthenticatedSession;
 use Laravel\Fortify\Features;
 
 return [
@@ -102,7 +105,7 @@ return [
     */
 
     'limiters' => [
-        'login' => 'login',
+        'login' => null,
         'two-factor' => 'two-factor',
     ],
 
@@ -139,4 +142,11 @@ return [
         ]),
     ],
 
+    'pipelines' => [
+        'login' => [
+            EnsureLoginIsNotThrottled::class,
+            AttemptToAuthenticate::class,
+            PrepareAuthenticatedSession::class,
+        ],
+    ],
 ];
