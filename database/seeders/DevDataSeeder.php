@@ -3,10 +3,10 @@
 namespace Database\Seeders;
 
 use App\Enums\Permission;
+use App\Models\Event;
 use App\Models\TimeSlot;
 use App\Models\TrackingDay;
 use App\Models\User;
-use Event;
 use Illuminate\Database\Seeder;
 
 class DevDataSeeder extends Seeder
