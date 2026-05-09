@@ -1,5 +1,8 @@
 <?php
 
+use Laravel\Fortify\Actions\AttemptToAuthenticate;
+use Laravel\Fortify\Actions\EnsureLoginIsNotThrottled;
+use Laravel\Fortify\Actions\PrepareAuthenticatedSession;
 use Laravel\Fortify\Features;
 
 return [
@@ -45,22 +48,9 @@ return [
     |
     */
 
-    'username' => 'email',
+    'username' => 'username',
 
     'email' => 'email',
-
-    /*
-    |--------------------------------------------------------------------------
-    | Lowercase Usernames
-    |--------------------------------------------------------------------------
-    |
-    | This value defines whether usernames should be lowercased before saving
-    | them in the database, as some database system string fields are case
-    | sensitive. You may disable this for your application if necessary.
-    |
-    */
-
-    'lowercase_usernames' => true,
 
     /*
     |--------------------------------------------------------------------------
@@ -115,7 +105,7 @@ return [
     */
 
     'limiters' => [
-        'login' => 'login',
+        'login' => null,
         'two-factor' => 'two-factor',
     ],
 
@@ -144,9 +134,7 @@ return [
     */
 
     'features' => [
-        Features::registration(),
         Features::resetPasswords(),
-        Features::emailVerification(),
         Features::twoFactorAuthentication([
             'confirm' => true,
             'confirmPassword' => true,
@@ -154,4 +142,11 @@ return [
         ]),
     ],
 
+    'pipelines' => [
+        'login' => [
+            EnsureLoginIsNotThrottled::class,
+            AttemptToAuthenticate::class,
+            PrepareAuthenticatedSession::class,
+        ],
+    ],
 ];
