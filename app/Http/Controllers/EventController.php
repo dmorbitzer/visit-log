@@ -15,4 +15,13 @@ class EventController extends Controller
             'archivedEvents' => Event::archived()->forUser(auth()->user())->get(),
         ]);
     }
+
+    public function show(Event $event): Response
+    {
+        $this->authorize('view', $event);
+
+        return Inertia::render('events/show', [
+            'event' => $event,
+        ]);
+    }
 }

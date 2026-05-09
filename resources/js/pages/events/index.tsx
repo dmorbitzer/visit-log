@@ -1,7 +1,21 @@
 import { Head } from '@inertiajs/react';
+import { router } from '@inertiajs/react';
+import { Settings } from 'lucide-react';
+import { useState } from 'react';
+import EventConfig from '@/components/event-config';
 import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import {
+    Sheet,
+    SheetContent,
+    SheetDescription,
+    SheetHeader,
+    SheetTitle,
+    SheetTrigger,
+} from '@/components/ui/sheet';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { show as eventShow } from '@/routes/events';
 import type { Event } from '@/types/event';
 
 type Props = {
@@ -21,10 +35,13 @@ export default function EventsIndex({ activeEvents, archivedEvents }: Props) {
 
                 <Tabs defaultValue="active">
                     <TabsList className="w-full md:mx-auto md:h-10 md:w-auto md:px-1">
-                        <TabsTrigger value="active">
+                        <TabsTrigger value="active" className="cursor-pointer">
                             Active ({activeEvents.length})
                         </TabsTrigger>
-                        <TabsTrigger value="archived">
+                        <TabsTrigger
+                            value="archived"
+                            className="cursor-pointer"
+                        >
                             Archived ({archivedEvents.length})
                         </TabsTrigger>
                     </TabsList>
@@ -73,16 +90,78 @@ function EventCard({
     event: Event;
     archived?: boolean;
 }) {
+    const [sheetOpen, setSheetOpen] = useState(false);
+    const [justClosed, setJustClosed] = useState(false);
+
+    const handleSheetOpenChange = (open: boolean) => {
+        setSheetOpen(open);
+
+        if (!open) {
+            setJustClosed(true);
+            setTimeout(() => setJustClosed(false), 100);
+        }
+    };
+
     return (
-        <Card className={archived ? 'opacity-60' : ''}>
+        <Card
+            className={`cursor-pointer ${archived ? 'opacity-60' : ''}`}
+            onClick={() => {
+                if (sheetOpen || justClosed) {
+                    return;
+                }
+
+                router.visit(eventShow({ event: event.id }));
+            }}
+        >
             <CardHeader className="pb-2">
                 <div className="flex items-center justify-between">
                     <CardTitle className="text-lg font-medium">
                         {event.name}
                     </CardTitle>
-                    <Badge variant={archived ? 'secondary' : 'default'}>
-                        {archived ? 'Archived' : 'Active'}
-                    </Badge>
+                    <div className="flex items-center gap-2">
+                        <Badge
+                            className={
+                                event.status === 'active'
+                                    ? 'border-blue-500 bg-blue-500 text-white'
+                                    : ''
+                            }
+                            variant={
+                                event.status === 'archived'
+                                    ? 'secondary'
+                                    : 'default'
+                            }
+                        >
+                            {event.status}
+                        </Badge>
+                        <Sheet
+                            open={sheetOpen}
+                            onOpenChange={handleSheetOpenChange}
+                        >
+                            <SheetTrigger asChild>
+                                <Button
+                                    variant="ghost"
+                                    size="icon"
+                                    className="size-7 cursor-pointer"
+                                    onClick={(e) => {
+                                        e.preventDefault();
+                                        e.stopPropagation();
+                                        setSheetOpen(true);
+                                    }}
+                                >
+                                    <Settings className="size-3.5" />
+                                </Button>
+                            </SheetTrigger>
+                            <SheetContent side="right">
+                                <SheetHeader>
+                                    <SheetTitle>{event.name}</SheetTitle>
+                                    <SheetDescription>
+                                        Event configuration details
+                                    </SheetDescription>
+                                </SheetHeader>
+                                <EventConfig event={event} />
+                            </SheetContent>
+                        </Sheet>
+                    </div>
                 </div>
             </CardHeader>
             <CardContent>
