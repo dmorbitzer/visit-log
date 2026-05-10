@@ -24,9 +24,14 @@ import type { Event } from '@/types/event';
 type Props = {
     activeEvents: Event[];
     archivedEvents: Event[];
+    canManage: boolean;
 };
 
-export default function EventsIndex({ activeEvents, archivedEvents }: Props) {
+export default function EventsIndex({
+    activeEvents,
+    archivedEvents,
+    canManage,
+}: Props) {
     return (
         <>
             <Head title="Events" />
@@ -66,7 +71,11 @@ export default function EventsIndex({ activeEvents, archivedEvents }: Props) {
                                 </p>
                             ) : (
                                 activeEvents.map((event) => (
-                                    <EventCard key={event.id} event={event} />
+                                    <EventCard
+                                        key={event.id}
+                                        event={event}
+                                        canManage={canManage}
+                                    />
                                 ))
                             )}
                         </div>
@@ -83,6 +92,7 @@ export default function EventsIndex({ activeEvents, archivedEvents }: Props) {
                                     <EventCard
                                         key={event.id}
                                         event={event}
+                                        canManage={canManage}
                                         archived
                                     />
                                 ))
@@ -97,9 +107,11 @@ export default function EventsIndex({ activeEvents, archivedEvents }: Props) {
 
 function EventCard({
     event,
+    canManage = false,
     archived = false,
 }: {
     event: Event;
+    canManage?: boolean;
     archived?: boolean;
 }) {
     const [sheetOpen, setSheetOpen] = useState(false);
@@ -170,7 +182,10 @@ function EventCard({
                                         Event configuration details
                                     </SheetDescription>
                                 </SheetHeader>
-                                <EventConfig event={event} />
+                                <EventConfig
+                                    event={event}
+                                    canManage={canManage}
+                                />
                             </SheetContent>
                         </Sheet>
                     </div>

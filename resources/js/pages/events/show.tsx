@@ -27,9 +27,10 @@ type RangeType = 'today' | 'week' | 'month';
 
 type Props = {
     event: Event;
+    canManage: boolean;
 };
 
-export default function EventsShow({ event }: Props) {
+export default function EventsShow({ event, canManage }: Props) {
     const [rangeType, setRangeType] = useState<RangeType>('today');
     const [offset, setOffset] = useState(0);
 
@@ -119,7 +120,7 @@ export default function EventsShow({ event }: Props) {
                                     Event configuration details
                                 </SheetDescription>
                             </SheetHeader>
-                            <EventConfig event={event} />
+                            <EventConfig event={event} canManage={canManage} />
                         </SheetContent>
                     </Sheet>
                 </div>
