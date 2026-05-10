@@ -24,4 +24,11 @@ if [ $? -ne 0 ]; then
     exit 1
 fi
 
+echo "Running frontend type check..."
+npm run types:check
+if [ $? -ne 0 ]; then
+    echo "TypeScript type check failed. Please fix the errors before committing."
+    exit 1
+fi
+
 exit 0
