@@ -33,6 +33,7 @@ class Event extends Model
     protected function casts(): array
     {
         return [
+            'status' => EventStatus::class,
             'recurrence_weekdays' => 'array',
             'start_date' => 'date',
             'end_date' => 'date',
