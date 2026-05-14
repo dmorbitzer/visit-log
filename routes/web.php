@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\EventUserController;
+use App\Http\Controllers\TrackingDayController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -18,6 +19,11 @@ Route::middleware(['auth'])->group(function () {
     Route::patch('/events/{event}', [EventController::class, 'update'])->name('events.update');
     Route::patch('/events/{event}/archive', [EventController::class, 'archive'])->name('events.archive');
     Route::delete('/events/{event}', [EventController::class, 'destroy'])->name('events.destroy');
+
+    Route::get('/events/{event}/days', [TrackingDayController::class, 'index'])->name('events.days.index');
+    Route::get('/events/{event}/days/{date}', [TrackingDayController::class, 'show'])->name('events.days.show');
+    Route::patch('/events/{event}/days/{date}/track', [TrackingDayController::class, 'track'])->name('events.days.track');
+    Route::patch('/events/{event}/days/{date}', [TrackingDayController::class, 'update'])->name('events.days.update');
 
     Route::get('/users', [UserController::class, 'index'])->name('users.index');
     Route::post('/users', [UserController::class, 'store'])->name('users.store');
