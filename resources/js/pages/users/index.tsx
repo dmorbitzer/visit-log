@@ -36,6 +36,7 @@ import {
     SheetHeader,
     SheetTitle,
 } from '@/components/ui/sheet';
+import { useTranslation } from '@/hooks/use-translation';
 import {
     destroy as destroyRoute,
     store as storeRoute,
@@ -58,6 +59,7 @@ export default function UsersIndex({ users }: Props) {
     const [sheetOpen, setSheetOpen] = useState(false);
     const [editingUser, setEditingUser] = useState<User | null>(null);
 
+    const { t } = useTranslation();
     const { data, setData, post, patch, processing, errors, reset } =
         useForm<UserFormData>({
             name: '',
@@ -99,18 +101,18 @@ export default function UsersIndex({ users }: Props) {
 
     return (
         <>
-            <Head title="Users" />
+            <Head title={t('Users')} />
 
             <div className="flex flex-col gap-6 p-6">
                 <div className="flex items-center justify-between">
-                    <h1 className="text-2xl font-medium">Users</h1>
+                    <h1 className="text-2xl font-medium">{t('Users')}</h1>
                     <Button
                         size="sm"
                         className="cursor-pointer gap-1"
                         onClick={openCreate}
                     >
                         <Plus className="size-4" />
-                        New user
+                        {t('New user')}
                     </Button>
                 </div>
 
@@ -119,12 +121,14 @@ export default function UsersIndex({ users }: Props) {
                         <thead>
                             <tr className="border-b text-xs font-medium tracking-wider text-muted-foreground uppercase">
                                 <th className="hidden px-4 py-3 text-left sm:table-cell">
-                                    Name
+                                    {t('Name')}
                                 </th>
                                 <th className="px-4 py-3 text-left">
-                                    Username
+                                    {t('Username')}
                                 </th>
-                                <th className="px-4 py-3 text-left">Role</th>
+                                <th className="px-4 py-3 text-left">
+                                    {t('Role')}
+                                </th>
                                 <th className="px-4 py-3" />
                             </tr>
                         </thead>
@@ -148,7 +152,7 @@ export default function UsersIndex({ users }: Props) {
                                                     : 'secondary'
                                             }
                                         >
-                                            {user.role}
+                                            {t(user.role)}
                                         </Badge>
                                     </td>
                                     <td className="px-4 py-3">
@@ -174,14 +178,14 @@ export default function UsersIndex({ users }: Props) {
                                                             }
                                                         >
                                                             <Pencil className="mr-2 size-3.5" />
-                                                            Edit
+                                                            {t('Edit')}
                                                         </DropdownMenuItem>
                                                         <AlertDialogTrigger
                                                             asChild
                                                         >
                                                             <DropdownMenuItem className="cursor-pointer text-destructive focus:text-destructive">
                                                                 <Trash2 className="mr-2 size-3.5" />
-                                                                Delete
+                                                                {t('Delete')}
                                                             </DropdownMenuItem>
                                                         </AlertDialogTrigger>
                                                     </DropdownMenuContent>
@@ -189,16 +193,20 @@ export default function UsersIndex({ users }: Props) {
                                                 <AlertDialogContent>
                                                     <AlertDialogHeader>
                                                         <AlertDialogTitle>
-                                                            User löschen?
+                                                            {t('Delete user?')}
                                                         </AlertDialogTitle>
                                                         <AlertDialogDescription>
-                                                            "{user.name}" wird
-                                                            permanent gelöscht.
+                                                            {t(
+                                                                ':name will be permanently deleted.',
+                                                                {
+                                                                    name: user.name,
+                                                                },
+                                                            )}
                                                         </AlertDialogDescription>
                                                     </AlertDialogHeader>
                                                     <AlertDialogFooter>
                                                         <AlertDialogCancel>
-                                                            Cancel
+                                                            {t('Cancel')}
                                                         </AlertDialogCancel>
                                                         <AlertDialogAction
                                                             className="bg-destructive text-white hover:bg-destructive/90"
@@ -210,7 +218,7 @@ export default function UsersIndex({ users }: Props) {
                                                                 )
                                                             }
                                                         >
-                                                            Delete
+                                                            {t('Delete')}
                                                         </AlertDialogAction>
                                                     </AlertDialogFooter>
                                                 </AlertDialogContent>
@@ -228,7 +236,7 @@ export default function UsersIndex({ users }: Props) {
                 <SheetContent side="right">
                     <SheetHeader>
                         <SheetTitle>
-                            {editingUser ? 'Edit user' : 'New user'}
+                            {editingUser ? t('Edit user') : t('New user')}
                         </SheetTitle>
                     </SheetHeader>
 
@@ -238,7 +246,7 @@ export default function UsersIndex({ users }: Props) {
                     >
                         <div className="flex flex-col gap-4">
                             <div className="flex flex-col gap-1.5">
-                                <Label htmlFor="name">Name</Label>
+                                <Label htmlFor="name">{t('Name')}</Label>
                                 <Input
                                     id="name"
                                     value={data.name}
@@ -254,7 +262,9 @@ export default function UsersIndex({ users }: Props) {
                             </div>
 
                             <div className="flex flex-col gap-1.5">
-                                <Label htmlFor="username">Username</Label>
+                                <Label htmlFor="username">
+                                    {t('Username')}
+                                </Label>
                                 <Input
                                     id="username"
                                     value={data.username}
@@ -270,7 +280,7 @@ export default function UsersIndex({ users }: Props) {
                             </div>
 
                             <div className="flex flex-col gap-1.5">
-                                <Label htmlFor="role">Role</Label>
+                                <Label htmlFor="role">{t('Role')}</Label>
                                 <Select
                                     value={data.role}
                                     onValueChange={(v) =>
@@ -285,10 +295,10 @@ export default function UsersIndex({ users }: Props) {
                                     </SelectTrigger>
                                     <SelectContent>
                                         <SelectItem value="admin">
-                                            Admin
+                                            {t('admin')}
                                         </SelectItem>
                                         <SelectItem value="tracker">
-                                            Tracker
+                                            {t('tracker')}
                                         </SelectItem>
                                     </SelectContent>
                                 </Select>
@@ -302,8 +312,8 @@ export default function UsersIndex({ users }: Props) {
                             <div className="flex flex-col gap-1.5">
                                 <Label htmlFor="password">
                                     {editingUser
-                                        ? 'New password (optional)'
-                                        : 'Password'}
+                                        ? t('New password (optional)')
+                                        : t('Password')}
                                 </Label>
                                 <Input
                                     id="password"
@@ -327,7 +337,9 @@ export default function UsersIndex({ users }: Props) {
                                 className="w-full cursor-pointer"
                                 disabled={processing}
                             >
-                                {editingUser ? 'Save changes' : 'Create user'}
+                                {editingUser
+                                    ? t('Save changes')
+                                    : t('New user')}
                             </Button>
                         </div>
                     </form>

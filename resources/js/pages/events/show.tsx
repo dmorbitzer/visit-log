@@ -20,6 +20,7 @@ import {
     SheetTitle,
     SheetTrigger,
 } from '@/components/ui/sheet';
+import { useTranslation } from '@/hooks/use-translation';
 import { index as eventsIndex } from '@/routes/events';
 import type { User } from '@/types';
 import type { Event } from '@/types/event';
@@ -33,6 +34,7 @@ type Props = {
 };
 
 export default function EventsShow({ event, canManage, allUsers }: Props) {
+    const { t } = useTranslation();
     const [rangeType, setRangeType] = useState<RangeType>('today');
     const [offset, setOffset] = useState(0);
 
@@ -77,7 +79,6 @@ export default function EventsShow({ event, canManage, allUsers }: Props) {
             <Head title={event.name} />
 
             <div className="flex flex-col gap-4 p-4 md:p-6">
-                {/* Header */}
                 <div className="flex items-center justify-between">
                     <div className="flex items-center gap-3">
                         <Link
@@ -101,7 +102,7 @@ export default function EventsShow({ event, canManage, allUsers }: Props) {
                                     : 'default'
                             }
                         >
-                            {event.status}
+                            {t(event.status)}
                         </Badge>
                     </div>
 
@@ -117,9 +118,11 @@ export default function EventsShow({ event, canManage, allUsers }: Props) {
                         </SheetTrigger>
                         <SheetContent side="right">
                             <SheetHeader>
-                                <SheetTitle>Event Configuration</SheetTitle>
+                                <SheetTitle>
+                                    {t('Event Configuration')}
+                                </SheetTitle>
                                 <SheetDescription>
-                                    Event configuration details
+                                    {t('Event configuration details')}
                                 </SheetDescription>
                             </SheetHeader>
                             <EventConfig
@@ -131,7 +134,6 @@ export default function EventsShow({ event, canManage, allUsers }: Props) {
                     </Sheet>
                 </div>
 
-                {/* Toolbar */}
                 <div className="flex items-center gap-2">
                     <Select
                         value={rangeType}
@@ -141,9 +143,9 @@ export default function EventsShow({ event, canManage, allUsers }: Props) {
                             <SelectValue />
                         </SelectTrigger>
                         <SelectContent>
-                            <SelectItem value="today">Today</SelectItem>
-                            <SelectItem value="week">Week</SelectItem>
-                            <SelectItem value="month">Month</SelectItem>
+                            <SelectItem value="today">{t('Today')}</SelectItem>
+                            <SelectItem value="week">{t('Week')}</SelectItem>
+                            <SelectItem value="month">{t('Month')}</SelectItem>
                         </SelectContent>
                     </Select>
 
@@ -173,16 +175,15 @@ export default function EventsShow({ event, canManage, allUsers }: Props) {
                     )}
                 </div>
 
-                {/* Tracking Days Placeholder */}
                 <Card>
                     <CardHeader>
                         <CardTitle className="text-base font-medium">
-                            Tracking
+                            {t('Tracking')}
                         </CardTitle>
                     </CardHeader>
                     <CardContent>
                         <p className="text-sm text-muted-foreground">
-                            Tracking view coming soon.
+                            {t('Tracking view coming soon.')}
                         </p>
                     </CardContent>
                 </Card>
