@@ -8,8 +8,12 @@ use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Validation\Rule;
 
+/**
+ * @group Event Users
+ */
 class EventUserController extends Controller
 {
     public function index(Event $event): JsonResponse
@@ -30,7 +34,7 @@ class EventUserController extends Controller
         return response()->json($users);
     }
 
-    public function store(Request $request, Event $event): RedirectResponse
+    public function store(Request $request, Event $event): RedirectResponse|Response
     {
         $this->authorize('update', $event);
 
@@ -43,10 +47,14 @@ class EventUserController extends Controller
             $validated['user_id'] => ['permission' => $validated['permission']],
         ]);
 
+        if ($request->wantsJson()) {
+            return response()->noContent();
+        }
+
         return redirect()->back();
     }
 
-    public function update(Request $request, Event $event, User $user): RedirectResponse
+    public function update(Request $request, Event $event, User $user): RedirectResponse|Response
     {
         $this->authorize('update', $event);
 
@@ -56,14 +64,22 @@ class EventUserController extends Controller
 
         $event->users()->updateExistingPivot($user->id, $validated);
 
+        if ($request->wantsJson()) {
+            return response()->noContent();
+        }
+
         return redirect()->back();
     }
 
-    public function destroy(Event $event, User $user): RedirectResponse
+    public function destroy(Request $request, Event $event, User $user): RedirectResponse|Response
     {
         $this->authorize('update', $event);
 
         $event->users()->detach($user->id);
+
+        if ($request->wantsJson()) {
+            return response()->noContent();
+        }
 
         return redirect()->back();
     }

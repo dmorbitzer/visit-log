@@ -5,30 +5,49 @@ namespace App\Http\Controllers;
 use App\Enums\EventStatus;
 use App\Models\Event;
 use App\Models\User;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
-use Inertia\Response;
+use Inertia\Response as InertiaResponse;
 
+/**
+ * @group Events
+ */
 class EventController extends Controller
 {
-    public function index(): Response
+    public function index(Request $request): InertiaResponse|JsonResponse
     {
         /** @var User $user */
         $user = Auth::user();
 
+        $activeEvents = Event::active()->forUser($user)->get();
+        $archivedEvents = Event::archived()->forUser($user)->get();
+
+        if ($request->wantsJson()) {
+            return response()->json([
+                'active' => $activeEvents,
+                'archived' => $archivedEvents,
+            ]);
+        }
+
         return Inertia::render('events/index', [
-            'activeEvents' => Event::active()->forUser($user)->get(),
-            'archivedEvents' => Event::archived()->forUser($user)->get(),
+            'activeEvents' => $activeEvents,
+            'archivedEvents' => $archivedEvents,
             'canManage' => $user->isAdmin(),
             'allUsers' => $user->isAdmin() ? User::orderBy('name')->get(['id', 'name', 'username']) : [],
         ]);
     }
 
-    public function show(Event $event): Response
+    public function show(Request $request, Event $event): InertiaResponse|JsonResponse
     {
         $this->authorize('view', $event);
+
+        if ($request->wantsJson()) {
+            return response()->json($event);
+        }
 
         /** @var User $user */
         $user = Auth::user();
@@ -40,14 +59,14 @@ class EventController extends Controller
         ]);
     }
 
-    public function create(): Response
+    public function create(): InertiaResponse
     {
         $this->authorize('create', Event::class);
 
         return Inertia::render('events/create');
     }
 
-    public function edit(Event $event): Response
+    public function edit(Event $event): InertiaResponse
     {
         $this->authorize('update', $event);
 
@@ -56,43 +75,57 @@ class EventController extends Controller
         ]);
     }
 
-    public function store(Request $request): RedirectResponse
+    public function store(Request $request): RedirectResponse|JsonResponse
     {
         $this->authorize('create', Event::class);
 
-        $validated = $request->validate($this->validationRules());
-
         $event = Event::create([
-            ...$validated,
+            ...$request->validate($this->validationRules()),
             'status' => 'active',
         ]);
+
+        if ($request->wantsJson()) {
+            return response()->json($event, 201);
+        }
 
         return redirect()->route('events.show', $event);
     }
 
-    public function update(Request $request, Event $event): RedirectResponse
+    public function update(Request $request, Event $event): RedirectResponse|JsonResponse
     {
         $this->authorize('update', $event);
 
         $event->update($request->validate($this->validationRules()));
 
+        if ($request->wantsJson()) {
+            return response()->json($event->fresh());
+        }
+
         return redirect()->route('events.show', $event);
     }
 
-    public function archive(Event $event): RedirectResponse
+    public function archive(Request $request, Event $event): RedirectResponse|JsonResponse
     {
         $this->authorize('archive', $event);
 
         $event->update(['status' => EventStatus::Archived]);
 
+        if ($request->wantsJson()) {
+            return response()->json($event->fresh());
+        }
+
         return redirect()->route('events.index');
     }
 
-    public function destroy(Event $event): RedirectResponse
+    public function destroy(Request $request, Event $event): RedirectResponse|Response
     {
         $this->authorize('delete', $event);
 
         $event->delete();
+
+        if ($request->wantsJson()) {
+            return response()->noContent();
+        }
 
         return redirect()->route('events.index');
     }
