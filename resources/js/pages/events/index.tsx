@@ -19,18 +19,21 @@ import {
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { show as eventShow } from '@/routes/events';
 import { create as eventsCreate } from '@/routes/events';
+import type { User } from '@/types';
 import type { Event } from '@/types/event';
 
 type Props = {
     activeEvents: Event[];
     archivedEvents: Event[];
     canManage: boolean;
+    allUsers: Pick<User, 'id' | 'name' | 'username'>[];
 };
 
 export default function EventsIndex({
     activeEvents,
     archivedEvents,
     canManage,
+    allUsers,
 }: Props) {
     return (
         <>
@@ -75,6 +78,7 @@ export default function EventsIndex({
                                         key={event.id}
                                         event={event}
                                         canManage={canManage}
+                                        allUsers={allUsers}
                                     />
                                 ))
                             )}
@@ -93,6 +97,7 @@ export default function EventsIndex({
                                         key={event.id}
                                         event={event}
                                         canManage={canManage}
+                                        allUsers={allUsers}
                                         archived
                                     />
                                 ))
@@ -108,10 +113,12 @@ export default function EventsIndex({
 function EventCard({
     event,
     canManage = false,
+    allUsers = [],
     archived = false,
 }: {
     event: Event;
     canManage?: boolean;
+    allUsers?: Pick<User, 'id' | 'name' | 'username'>[];
     archived?: boolean;
 }) {
     const [sheetOpen, setSheetOpen] = useState(false);
@@ -185,6 +192,7 @@ function EventCard({
                                 <EventConfig
                                     event={event}
                                     canManage={canManage}
+                                    allUsers={allUsers}
                                 />
                             </SheetContent>
                         </Sheet>

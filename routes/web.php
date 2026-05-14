@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\EventController;
+use App\Http\Controllers\EventUserController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -16,6 +18,16 @@ Route::middleware(['auth'])->group(function () {
     Route::patch('/events/{event}', [EventController::class, 'update'])->name('events.update');
     Route::patch('/events/{event}/archive', [EventController::class, 'archive'])->name('events.archive');
     Route::delete('/events/{event}', [EventController::class, 'destroy'])->name('events.destroy');
+
+    Route::get('/users', [UserController::class, 'index'])->name('users.index');
+    Route::post('/users', [UserController::class, 'store'])->name('users.store');
+    Route::patch('/users/{user}', [UserController::class, 'update'])->name('users.update');
+    Route::delete('/users/{user}', [UserController::class, 'destroy'])->name('users.destroy');
+
+    Route::get('/events/{event}/users', [EventUserController::class, 'index'])->name('events.users.index');
+    Route::post('/events/{event}/users', [EventUserController::class, 'store'])->name('events.users.store');
+    Route::patch('/events/{event}/users/{user}', [EventUserController::class, 'update'])->name('events.users.update');
+    Route::delete('/events/{event}/users/{user}', [EventUserController::class, 'destroy'])->name('events.users.destroy');
 });
 
 require __DIR__.'/settings.php';

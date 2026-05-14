@@ -22,6 +22,7 @@ class EventController extends Controller
             'activeEvents' => Event::active()->forUser($user)->get(),
             'archivedEvents' => Event::archived()->forUser($user)->get(),
             'canManage' => $user->isAdmin(),
+            'allUsers' => $user->isAdmin() ? User::orderBy('name')->get(['id', 'name', 'username']) : [],
         ]);
     }
 
@@ -35,6 +36,7 @@ class EventController extends Controller
         return Inertia::render('events/show', [
             'event' => $event,
             'canManage' => $user->isAdmin(),
+            'allUsers' => $user->isAdmin() ? User::orderBy('name')->get(['id', 'name', 'username']) : [],
         ]);
     }
 

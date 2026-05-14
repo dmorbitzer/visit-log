@@ -21,6 +21,7 @@ import {
     SheetTrigger,
 } from '@/components/ui/sheet';
 import { index as eventsIndex } from '@/routes/events';
+import type { User } from '@/types';
 import type { Event } from '@/types/event';
 
 type RangeType = 'today' | 'week' | 'month';
@@ -28,9 +29,10 @@ type RangeType = 'today' | 'week' | 'month';
 type Props = {
     event: Event;
     canManage: boolean;
+    allUsers: Pick<User, 'id' | 'name' | 'username'>[];
 };
 
-export default function EventsShow({ event, canManage }: Props) {
+export default function EventsShow({ event, canManage, allUsers }: Props) {
     const [rangeType, setRangeType] = useState<RangeType>('today');
     const [offset, setOffset] = useState(0);
 
@@ -120,7 +122,11 @@ export default function EventsShow({ event, canManage }: Props) {
                                     Event configuration details
                                 </SheetDescription>
                             </SheetHeader>
-                            <EventConfig event={event} canManage={canManage} />
+                            <EventConfig
+                                event={event}
+                                canManage={canManage}
+                                allUsers={allUsers}
+                            />
                         </SheetContent>
                     </Sheet>
                 </div>
