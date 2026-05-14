@@ -13,29 +13,31 @@ import {
     SidebarMenuButton,
     SidebarMenuItem,
 } from '@/components/ui/sidebar';
+import { useTranslation } from '@/hooks/use-translation';
 import { index as eventsIndex } from '@/routes/events';
 import { index as usersIndex } from '@/routes/users';
 import type { NavItem } from '@/types';
 
-const mainNavItems: NavItem[] = [
-    {
-        title: 'Events',
-        href: eventsIndex(),
-        icon: CalendarDays,
-    },
-];
-
-const adminNavItems: NavItem[] = [
-    {
-        title: 'Users',
-        href: usersIndex(),
-        icon: Users,
-    },
-];
-
 export function AppSidebar() {
     const { auth } = usePage().props;
+    const { t } = useTranslation();
     const isAdmin = auth.user?.role === 'admin';
+
+    const mainNavItems: NavItem[] = [
+        {
+            title: t('Events'),
+            href: eventsIndex(),
+            icon: CalendarDays,
+        },
+    ];
+
+    const adminNavItems: NavItem[] = [
+        {
+            title: t('Users'),
+            href: usersIndex(),
+            icon: Users,
+        },
+    ];
 
     return (
         <Sidebar collapsible="icon" variant="inset">
@@ -51,8 +53,10 @@ export function AppSidebar() {
                 </SidebarMenu>
             </SidebarHeader>
             <SidebarContent>
-                <NavMain items={mainNavItems} />
-                {isAdmin && <NavMain items={adminNavItems} />}
+                <NavMain items={mainNavItems} label={t('Tracking')} />
+                {isAdmin && (
+                    <NavMain items={adminNavItems} label={t('Admin')} />
+                )}
             </SidebarContent>
             <SidebarFooter>
                 <NavUser />

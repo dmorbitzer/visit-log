@@ -20,6 +20,7 @@ import {
     SelectTrigger,
     SelectValue,
 } from '@/components/ui/select';
+import { useTranslation } from '@/hooks/use-translation';
 import {
     archive as archiveRoute,
     destroy as destroyRoute,
@@ -51,6 +52,7 @@ export default function EventConfig({
     canManage = false,
     allUsers = [],
 }: Props) {
+    const { t } = useTranslation();
     const [archiveOpen, setArchiveOpen] = useState(false);
     const [deleteOpen, setDeleteOpen] = useState(false);
     const [assignedUsers, setAssignedUsers] = useState<AssignedUser[]>([]);
@@ -148,27 +150,29 @@ export default function EventConfig({
             {/* Config rows */}
             <div className="flex flex-col gap-3">
                 <div className="flex justify-between text-sm">
-                    <span className="text-muted-foreground">Type</span>
+                    <span className="text-muted-foreground">{t('Type')}</span>
                     <span className="capitalize">
                         {event.type.replace('_', ' ')}
                     </span>
                 </div>
                 <div className="flex justify-between text-sm">
                     <span className="text-muted-foreground">
-                        Tracking hours
+                        {t('Tracking hours')}
                     </span>
                     <span>
                         {event.tracking_start} – {event.tracking_end}
                     </span>
                 </div>
                 <div className="flex justify-between text-sm">
-                    <span className="text-muted-foreground">Slot interval</span>
+                    <span className="text-muted-foreground">
+                        {t('Slot interval')}
+                    </span>
                     <span>{event.slot_interval_minutes} min</span>
                 </div>
                 {event.start_date && (
                     <div className="flex justify-between text-sm">
                         <span className="text-muted-foreground">
-                            Start date
+                            {t('Start date')}
                         </span>
                         <span>
                             {new Date(event.start_date).toLocaleDateString(
@@ -179,7 +183,9 @@ export default function EventConfig({
                 )}
                 {event.end_date && (
                     <div className="flex justify-between text-sm">
-                        <span className="text-muted-foreground">End date</span>
+                        <span className="text-muted-foreground">
+                            {t('End date')}
+                        </span>
                         <span>
                             {new Date(event.end_date).toLocaleDateString(
                                 'de-DE',
@@ -190,12 +196,12 @@ export default function EventConfig({
                 {event.recurrence_weekdays && (
                     <div className="flex justify-between text-sm">
                         <span className="text-muted-foreground">
-                            Recurrence
+                            {t('Recurrence')}
                         </span>
                         <span>
                             {event.recurrence_weekdays
-                                .map(
-                                    (d: number) =>
+                                .map((d: number) =>
+                                    t(
                                         [
                                             'Sun',
                                             'Mon',
@@ -205,6 +211,7 @@ export default function EventConfig({
                                             'Fri',
                                             'Sat',
                                         ][d],
+                                    ),
                                 )
                                 .join(', ')}
                         </span>
@@ -216,12 +223,12 @@ export default function EventConfig({
             {canManage && (
                 <div className="mt-6 flex flex-col gap-3">
                     <p className="text-xs font-medium tracking-wider text-muted-foreground uppercase">
-                        Users
+                        {t('Users')}
                     </p>
 
                     {assignedUsers.length === 0 ? (
                         <p className="text-sm text-muted-foreground">
-                            No users assigned.
+                            {t('No users assigned.')}
                         </p>
                     ) : (
                         <div className="flex flex-col gap-2">
@@ -247,10 +254,10 @@ export default function EventConfig({
                                         </SelectTrigger>
                                         <SelectContent>
                                             <SelectItem value="tracker">
-                                                Tracker
+                                                {t('Tracker')}
                                             </SelectItem>
                                             <SelectItem value="viewer">
-                                                Viewer
+                                                {t('Viewer')}
                                             </SelectItem>
                                         </SelectContent>
                                     </Select>
@@ -274,7 +281,7 @@ export default function EventConfig({
                                 onValueChange={setAddUserId}
                             >
                                 <SelectTrigger className="h-7 flex-1 text-xs">
-                                    <SelectValue placeholder="Add user…" />
+                                    <SelectValue placeholder={t('Add user…')} />
                                 </SelectTrigger>
                                 <SelectContent>
                                     {unassignedUsers.map((u) => (
@@ -328,7 +335,7 @@ export default function EventConfig({
                         onClick={() => router.visit(editRoute(event.id))}
                     >
                         <Pencil className="size-4" />
-                        Edit event
+                        {t('Edit event')}
                     </Button>
 
                     {event.status === 'active' && (
@@ -342,25 +349,27 @@ export default function EventConfig({
                                     className="w-full justify-start gap-2"
                                 >
                                     <Archive className="size-4" />
-                                    Archive event
+                                    {t('Archive event')}
                                 </Button>
                             </AlertDialogTrigger>
                             <AlertDialogContent>
                                 <AlertDialogHeader>
                                     <AlertDialogTitle>
-                                        Archive event?
+                                        {t('Archive event?')}
                                     </AlertDialogTitle>
                                     <AlertDialogDescription>
-                                        "{event.name}" wird archiviert und ist
-                                        für Tracker nicht mehr sichtbar.
+                                        {t(
+                                            ':name wird archiviert und ist für Tracker nicht mehr sichtbar.',
+                                            { name: event.name },
+                                        )}
                                     </AlertDialogDescription>
                                 </AlertDialogHeader>
                                 <AlertDialogFooter>
                                     <AlertDialogCancel>
-                                        Cancel
+                                        {t('Cancel')}
                                     </AlertDialogCancel>
                                     <AlertDialogAction onClick={handleArchive}>
-                                        Archive
+                                        {t('Archive')}
                                     </AlertDialogAction>
                                 </AlertDialogFooter>
                             </AlertDialogContent>
@@ -374,27 +383,30 @@ export default function EventConfig({
                                 className="w-full justify-start gap-2 text-destructive hover:text-destructive"
                             >
                                 <Trash2 className="size-4" />
-                                Delete event
+                                {t('Delete event')}
                             </Button>
                         </AlertDialogTrigger>
                         <AlertDialogContent>
                             <AlertDialogHeader>
                                 <AlertDialogTitle>
-                                    Event löschen?
+                                    {t('Delete event?')}
                                 </AlertDialogTitle>
                                 <AlertDialogDescription>
-                                    "{event.name}" wird permanent gelöscht.
-                                    Diese Aktion kann nicht rückgängig gemacht
-                                    werden.
+                                    {t(
+                                        ':name will be permanently deleted. This action cannot be undone.',
+                                        { name: event.name },
+                                    )}
                                 </AlertDialogDescription>
                             </AlertDialogHeader>
                             <AlertDialogFooter>
-                                <AlertDialogCancel>Cancel</AlertDialogCancel>
+                                <AlertDialogCancel>
+                                    {t('Cancel')}
+                                </AlertDialogCancel>
                                 <AlertDialogAction
                                     className="bg-destructive text-white hover:bg-destructive/90"
                                     onClick={handleDelete}
                                 >
-                                    Delete
+                                    {t('Delete')}
                                 </AlertDialogAction>
                             </AlertDialogFooter>
                         </AlertDialogContent>

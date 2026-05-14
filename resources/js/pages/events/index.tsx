@@ -17,6 +17,7 @@ import {
     SheetTrigger,
 } from '@/components/ui/sheet';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { useTranslation } from '@/hooks/use-translation';
 import { show as eventShow } from '@/routes/events';
 import { create as eventsCreate } from '@/routes/events';
 import type { User } from '@/types';
@@ -35,13 +36,15 @@ export default function EventsIndex({
     canManage,
     allUsers,
 }: Props) {
+    const { t } = useTranslation();
+
     return (
         <>
-            <Head title="Events" />
+            <Head title={t('Events')} />
 
             <div className="flex flex-col gap-6 p-6">
                 <div className="flex items-center justify-between">
-                    <h1 className="text-2xl font-medium">Events</h1>
+                    <h1 className="text-2xl font-medium">{t('Events')}</h1>
                     <Link href={eventsCreate()}>
                         <Button
                             size="icon"
@@ -56,13 +59,13 @@ export default function EventsIndex({
                 <Tabs defaultValue="active">
                     <TabsList className="w-full md:mx-auto md:h-10 md:w-auto md:px-1">
                         <TabsTrigger value="active" className="cursor-pointer">
-                            Active ({activeEvents.length})
+                            {t('Active')} ({activeEvents.length})
                         </TabsTrigger>
                         <TabsTrigger
                             value="archived"
                             className="cursor-pointer"
                         >
-                            Archived ({archivedEvents.length})
+                            {t('Archived')} ({archivedEvents.length})
                         </TabsTrigger>
                     </TabsList>
 
@@ -70,7 +73,7 @@ export default function EventsIndex({
                         <div className="grid gap-4">
                             {activeEvents.length === 0 ? (
                                 <p className="text-sm text-muted-foreground">
-                                    No active events.
+                                    {t('No active events.')}
                                 </p>
                             ) : (
                                 activeEvents.map((event) => (
@@ -89,7 +92,7 @@ export default function EventsIndex({
                         <div className="grid gap-4">
                             {archivedEvents.length === 0 ? (
                                 <p className="text-sm text-muted-foreground">
-                                    No archived events.
+                                    {t('No archived events.')}
                                 </p>
                             ) : (
                                 archivedEvents.map((event) => (
@@ -121,6 +124,7 @@ function EventCard({
     allUsers?: Pick<User, 'id' | 'name' | 'username'>[];
     archived?: boolean;
 }) {
+    const { t } = useTranslation();
     const [sheetOpen, setSheetOpen] = useState(false);
     const [justClosed, setJustClosed] = useState(false);
 
@@ -162,7 +166,7 @@ function EventCard({
                                     : 'default'
                             }
                         >
-                            {event.status}
+                            {t(event.status)}
                         </Badge>
                         <Sheet
                             open={sheetOpen}
@@ -186,7 +190,7 @@ function EventCard({
                                 <SheetHeader>
                                     <SheetTitle>{event.name}</SheetTitle>
                                     <SheetDescription>
-                                        Event configuration details
+                                        {t('Event configuration details')}
                                     </SheetDescription>
                                 </SheetHeader>
                                 <EventConfig

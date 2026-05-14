@@ -3,6 +3,7 @@
 namespace App\Http\Middleware;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\App;
 use Inertia\Middleware;
 
 class HandleInertiaRequests extends Middleware
@@ -21,6 +22,15 @@ class HandleInertiaRequests extends Middleware
      *
      * @see https://inertiajs.com/asset-versioning
      */
+    private function loadTranslations(string $locale): object|array
+    {
+        $path = lang_path($locale.'.json');
+
+        return file_exists($path)
+            ? (array) json_decode(file_get_contents($path), true)
+            : (object) [];
+    }
+
     public function version(Request $request): ?string
     {
         return parent::version($request);
@@ -42,6 +52,8 @@ class HandleInertiaRequests extends Middleware
                 'user' => $request->user(),
             ],
             'sidebarOpen' => ! $request->hasCookie('sidebar_state') || $request->cookie('sidebar_state') === 'true',
+            'locale' => App::getLocale(),
+            'translations' => $this->loadTranslations(App::getLocale()),
         ];
     }
 }

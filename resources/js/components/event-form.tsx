@@ -14,6 +14,7 @@ import {
     SelectTrigger,
     SelectValue,
 } from '@/components/ui/select';
+import { useTranslation } from '@/hooks/use-translation';
 import { index as eventsIndex } from '@/routes/events';
 import type { Event } from '@/types/event';
 
@@ -24,6 +25,7 @@ type Props = {
 const WEEKDAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
 export default function EventForm({ event }: Props) {
+    const { t } = useTranslation();
     const isEdit = !!event;
 
     const { data, setData, post, patch, processing, errors } = useForm({
@@ -63,10 +65,9 @@ export default function EventForm({ event }: Props) {
 
     return (
         <>
-            <Head title={isEdit ? `Edit ${event.name}` : 'New Event'} />
+            <Head title={isEdit ? `Edit ${event.name}` : t('New Event')} />
 
             <div className="flex flex-col gap-6 p-4 md:p-6">
-                {/* Header */}
                 <div className="flex items-center gap-3">
                     <Link
                         href={eventsIndex()}
@@ -75,21 +76,20 @@ export default function EventForm({ event }: Props) {
                         <ArrowLeft className="size-5" strokeWidth={2.5} />
                     </Link>
                     <h1 className="text-2xl font-medium">
-                        {isEdit ? `Edit ${event.name}` : 'New Event'}
+                        {isEdit ? `Edit ${event.name}` : t('New Event')}
                     </h1>
                 </div>
 
                 <form onSubmit={submit} className="flex flex-col gap-4">
-                    {/* Name */}
                     <Card>
                         <CardHeader>
                             <CardTitle className="text-base font-medium">
-                                General
+                                {t('General')}
                             </CardTitle>
                         </CardHeader>
                         <CardContent className="flex flex-col gap-4">
                             <div className="flex flex-col gap-2">
-                                <Label htmlFor="name">Name</Label>
+                                <Label htmlFor="name">{t('Name')}</Label>
                                 <Input
                                     id="name"
                                     value={data.name}
@@ -106,7 +106,7 @@ export default function EventForm({ event }: Props) {
                             </div>
 
                             <div className="flex flex-col gap-2">
-                                <Label htmlFor="type">Type</Label>
+                                <Label htmlFor="type">{t('Type')}</Label>
                                 <Select
                                     value={data.type}
                                     onValueChange={(v) =>
@@ -118,13 +118,13 @@ export default function EventForm({ event }: Props) {
                                     </SelectTrigger>
                                     <SelectContent>
                                         <SelectItem value="recurring">
-                                            Recurring
+                                            {t('Recurring')}
                                         </SelectItem>
                                         <SelectItem value="date_range">
-                                            Date Range
+                                            {t('Date Range')}
                                         </SelectItem>
                                         <SelectItem value="custom_days">
-                                            Custom Days
+                                            {t('Custom Days')}
                                         </SelectItem>
                                     </SelectContent>
                                 </Select>
@@ -137,17 +137,16 @@ export default function EventForm({ event }: Props) {
                         </CardContent>
                     </Card>
 
-                    {/* Type-specific fields */}
                     {data.type === 'recurring' && (
                         <Card>
                             <CardHeader>
                                 <CardTitle className="text-base font-medium">
-                                    Recurrence
+                                    {t('Recurrence')}
                                 </CardTitle>
                             </CardHeader>
                             <CardContent className="flex flex-col gap-4">
                                 <div className="flex flex-col gap-2">
-                                    <Label>Weekdays</Label>
+                                    <Label>{t('Weekdays')}</Label>
                                     <div className="flex flex-wrap gap-2">
                                         {WEEKDAYS.map((day, index) => (
                                             <button
@@ -164,7 +163,7 @@ export default function EventForm({ event }: Props) {
                                                         : 'border-border text-muted-foreground hover:border-foreground'
                                                 }`}
                                             >
-                                                {day}
+                                                {t(day)}
                                             </button>
                                         ))}
                                     </div>
@@ -177,7 +176,7 @@ export default function EventForm({ event }: Props) {
 
                                 <div className="flex flex-col gap-2">
                                     <Label htmlFor="start_date">
-                                        Start date (optional)
+                                        {t('Start date (optional)')}
                                     </Label>
                                     <DatePicker
                                         value={data.start_date ?? ''}
@@ -189,7 +188,7 @@ export default function EventForm({ event }: Props) {
 
                                 <div className="flex flex-col gap-2">
                                     <Label htmlFor="end_date">
-                                        End date (optional)
+                                        {t('End date (optional)')}
                                     </Label>
                                     <DatePicker
                                         value={data.end_date ?? ''}
@@ -204,13 +203,13 @@ export default function EventForm({ event }: Props) {
                         <Card>
                             <CardHeader>
                                 <CardTitle className="text-base font-medium">
-                                    Date Range
+                                    {t('Date Range')}
                                 </CardTitle>
                             </CardHeader>
                             <CardContent className="flex flex-col gap-4">
                                 <div className="flex flex-col gap-2">
                                     <Label htmlFor="start_date">
-                                        Start date
+                                        {t('Start date')}
                                     </Label>
                                     <DatePicker
                                         value={data.start_date ?? ''}
@@ -225,7 +224,9 @@ export default function EventForm({ event }: Props) {
                                     )}
                                 </div>
                                 <div className="flex flex-col gap-2">
-                                    <Label htmlFor="end_date">End date</Label>
+                                    <Label htmlFor="end_date">
+                                        {t('End date')}
+                                    </Label>
                                     <DatePicker
                                         value={data.end_date ?? ''}
                                         onChange={(v) => setData('end_date', v)}
@@ -240,18 +241,17 @@ export default function EventForm({ event }: Props) {
                         </Card>
                     )}
 
-                    {/* Tracking Config */}
                     <Card>
                         <CardHeader>
                             <CardTitle className="text-base font-medium">
-                                Tracking
+                                {t('Tracking')}
                             </CardTitle>
                         </CardHeader>
                         <CardContent className="flex flex-col gap-4">
                             <div className="grid grid-cols-2 gap-4">
                                 <div className="flex flex-col gap-2">
                                     <Label htmlFor="tracking_start">
-                                        Start time
+                                        {t('Start time')}
                                     </Label>
                                     <Input
                                         id="tracking_start"
@@ -272,7 +272,7 @@ export default function EventForm({ event }: Props) {
                                 </div>
                                 <div className="flex flex-col gap-2">
                                     <Label htmlFor="tracking_end">
-                                        End time
+                                        {t('End time')}
                                     </Label>
                                     <Input
                                         id="tracking_end"
@@ -295,7 +295,7 @@ export default function EventForm({ event }: Props) {
 
                             <div className="flex flex-col gap-2">
                                 <Label htmlFor="slot_interval_minutes">
-                                    Slot interval (minutes)
+                                    {t('Slot interval (minutes)')}
                                 </Label>
                                 <Select
                                     value={String(data.slot_interval_minutes)}
@@ -311,13 +311,13 @@ export default function EventForm({ event }: Props) {
                                     </SelectTrigger>
                                     <SelectContent>
                                         <SelectItem value="15">
-                                            15 min
+                                            {t('15 min')}
                                         </SelectItem>
                                         <SelectItem value="30">
-                                            30 min
+                                            {t('30 min')}
                                         </SelectItem>
                                         <SelectItem value="60">
-                                            60 min
+                                            {t('60 min')}
                                         </SelectItem>
                                     </SelectContent>
                                 </Select>
@@ -330,7 +330,6 @@ export default function EventForm({ event }: Props) {
                         </CardContent>
                     </Card>
 
-                    {/* Submit */}
                     <div className="flex justify-end gap-3">
                         <Link href={eventsIndex()}>
                             <Button
@@ -338,7 +337,7 @@ export default function EventForm({ event }: Props) {
                                 className="cursor-pointer"
                                 variant="outline"
                             >
-                                Cancel
+                                {t('Cancel')}
                             </Button>
                         </Link>
                         <Button
@@ -346,7 +345,7 @@ export default function EventForm({ event }: Props) {
                             disabled={processing}
                             className="cursor-pointer"
                         >
-                            {isEdit ? 'Save changes' : 'Create event'}
+                            {isEdit ? t('Save changes') : t('Create event')}
                         </Button>
                     </div>
                 </form>
