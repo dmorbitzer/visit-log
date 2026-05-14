@@ -15,6 +15,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
 
+/**
+ * @group Tracking
+ */
 class TrackingDayController extends Controller
 {
     public function index(Request $request, Event $event): JsonResponse
