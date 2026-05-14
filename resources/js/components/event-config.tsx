@@ -1,6 +1,6 @@
 import { router } from '@inertiajs/react';
-import { Pencil, Archive, Trash2 } from 'lucide-react';
-import { useState } from 'react';
+import { Archive, Pencil, Trash2, UserMinus, UserPlus } from 'lucide-react';
+import { useEffect, useState } from 'react';
 import {
     AlertDialog,
     AlertDialogAction,
@@ -14,20 +14,126 @@ import {
 } from '@/components/ui/alert-dialog';
 import { Button } from '@/components/ui/button';
 import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from '@/components/ui/select';
+import {
     archive as archiveRoute,
     destroy as destroyRoute,
     edit as editRoute,
 } from '@/routes/events';
+import {
+    destroy as removeUserRoute,
+    store as assignUserRoute,
+    update as updatePermissionRoute,
+} from '@/routes/events/users';
+import type { User } from '@/types';
 import type { Event } from '@/types/event';
+
+type AssignedUser = {
+    id: number;
+    name: string;
+    username: string;
+    permission: 'viewer' | 'tracker';
+};
 
 type Props = {
     event: Event;
     canManage?: boolean;
+    allUsers?: Pick<User, 'id' | 'name' | 'username'>[];
 };
 
-export default function EventConfig({ event, canManage = false }: Props) {
+export default function EventConfig({
+    event,
+    canManage = false,
+    allUsers = [],
+}: Props) {
     const [archiveOpen, setArchiveOpen] = useState(false);
     const [deleteOpen, setDeleteOpen] = useState(false);
+    const [assignedUsers, setAssignedUsers] = useState<AssignedUser[]>([]);
+    const [addUserId, setAddUserId] = useState('');
+    const [addPermission, setAddPermission] = useState<'viewer' | 'tracker'>(
+        'tracker',
+    );
+
+    useEffect(() => {
+        if (!canManage) {
+            return;
+        }
+
+        fetch(`/events/${event.id}/users`, {
+            headers: { Accept: 'application/json' },
+            credentials: 'same-origin',
+        })
+            .then((r) => r.json())
+            .then(setAssignedUsers)
+            .catch(() => {});
+    }, [event.id, canManage]);
+
+    const unassignedUsers = allUsers.filter(
+        (u) => !assignedUsers.some((a) => a.id === u.id),
+    );
+
+    const handleAssign = () => {
+        if (!addUserId) {
+            return;
+        }
+
+        router.post(
+            assignUserRoute.url(event.id),
+            { user_id: Number(addUserId), permission: addPermission },
+            {
+                preserveScroll: true,
+                preserveState: true,
+                onSuccess: () => {
+                    const user = allUsers.find(
+                        (u) => u.id === Number(addUserId),
+                    );
+
+                    if (user) {
+                        setAssignedUsers((prev) => [
+                            ...prev,
+                            { ...user, permission: addPermission },
+                        ]);
+                    }
+
+                    setAddUserId('');
+                },
+            },
+        );
+    };
+
+    const handlePermissionChange = (
+        userId: number,
+        permission: 'viewer' | 'tracker',
+    ) => {
+        router.patch(
+            updatePermissionRoute.url({ event: event.id, user: userId }),
+            { permission },
+            {
+                preserveScroll: true,
+                preserveState: true,
+                onSuccess: () =>
+                    setAssignedUsers((prev) =>
+                        prev.map((u) =>
+                            u.id === userId ? { ...u, permission } : u,
+                        ),
+                    ),
+            },
+        );
+    };
+
+    const handleRemoveUser = (userId: number) => {
+        router.delete(removeUserRoute.url({ event: event.id, user: userId }), {
+            preserveScroll: true,
+            preserveState: true,
+            onSuccess: () =>
+                setAssignedUsers((prev) => prev.filter((u) => u.id !== userId)),
+        });
+    };
 
     const handleArchive = () => {
         router.patch(archiveRoute(event.id));
@@ -39,6 +145,7 @@ export default function EventConfig({ event, canManage = false }: Props) {
 
     return (
         <div className="flex h-full flex-col px-4 py-4">
+            {/* Config rows */}
             <div className="flex flex-col gap-3">
                 <div className="flex justify-between text-sm">
                     <span className="text-muted-foreground">Type</span>
@@ -105,6 +212,114 @@ export default function EventConfig({ event, canManage = false }: Props) {
                 )}
             </div>
 
+            {/* Users section */}
+            {canManage && (
+                <div className="mt-6 flex flex-col gap-3">
+                    <p className="text-xs font-medium tracking-wider text-muted-foreground uppercase">
+                        Users
+                    </p>
+
+                    {assignedUsers.length === 0 ? (
+                        <p className="text-sm text-muted-foreground">
+                            No users assigned.
+                        </p>
+                    ) : (
+                        <div className="flex flex-col gap-2">
+                            {assignedUsers.map((u) => (
+                                <div
+                                    key={u.id}
+                                    className="flex items-center gap-2"
+                                >
+                                    <span className="min-w-0 flex-1 truncate text-sm">
+                                        {u.name}
+                                    </span>
+                                    <Select
+                                        value={u.permission}
+                                        onValueChange={(v) =>
+                                            handlePermissionChange(
+                                                u.id,
+                                                v as 'viewer' | 'tracker',
+                                            )
+                                        }
+                                    >
+                                        <SelectTrigger className="h-7 w-24 text-xs">
+                                            <SelectValue />
+                                        </SelectTrigger>
+                                        <SelectContent>
+                                            <SelectItem value="tracker">
+                                                Tracker
+                                            </SelectItem>
+                                            <SelectItem value="viewer">
+                                                Viewer
+                                            </SelectItem>
+                                        </SelectContent>
+                                    </Select>
+                                    <Button
+                                        variant="ghost"
+                                        size="icon"
+                                        className="size-7 shrink-0 text-muted-foreground hover:text-destructive"
+                                        onClick={() => handleRemoveUser(u.id)}
+                                    >
+                                        <UserMinus className="size-3.5" />
+                                    </Button>
+                                </div>
+                            ))}
+                        </div>
+                    )}
+
+                    {unassignedUsers.length > 0 && (
+                        <div className="flex items-center gap-2 border-t pt-3">
+                            <Select
+                                value={addUserId}
+                                onValueChange={setAddUserId}
+                            >
+                                <SelectTrigger className="h-7 flex-1 text-xs">
+                                    <SelectValue placeholder="Add user…" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                    {unassignedUsers.map((u) => (
+                                        <SelectItem
+                                            key={u.id}
+                                            value={String(u.id)}
+                                        >
+                                            {u.name}
+                                        </SelectItem>
+                                    ))}
+                                </SelectContent>
+                            </Select>
+                            <Select
+                                value={addPermission}
+                                onValueChange={(v) =>
+                                    setAddPermission(v as 'viewer' | 'tracker')
+                                }
+                            >
+                                <SelectTrigger className="h-7 w-24 text-xs">
+                                    <SelectValue />
+                                </SelectTrigger>
+                                <SelectContent>
+                                    <SelectItem value="tracker">
+                                        Tracker
+                                    </SelectItem>
+                                    <SelectItem value="viewer">
+                                        Viewer
+                                    </SelectItem>
+                                </SelectContent>
+                            </Select>
+                            <Button
+                                variant="ghost"
+                                size="icon"
+                                className="size-7 shrink-0"
+                                disabled={!addUserId}
+                                onClick={handleAssign}
+                            >
+                                <UserPlus className="size-3.5" />
+                            </Button>
+                        </div>
+                    )}
+                </div>
+            )}
+
+            {/* Admin actions */}
             {canManage && (
                 <div className="mt-auto flex flex-col gap-2 border-t pt-4">
                     <Button

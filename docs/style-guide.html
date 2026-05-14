@@ -1,0 +1,967 @@
+<!DOCTYPE html>
+<html lang="de">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VisitLog — Styleguide</title>
+    <style>
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        :root {
+            --primary: #378ADD;
+            --primary-light: #EBF4FF;
+            --primary-dark: #185FA5;
+            --bg: #F4F4F3;
+            --surface: #FFFFFF;
+            --surface2: #F9F9F8;
+            --border: #E5E3DF;
+            --text: #1a1a1a;
+            --text-2: #6B7280;
+            --text-3: #9CA3AF;
+            --green-bg: #EAF3DE;
+            --green: #3B6D11;
+            --amber-bg: #FAEEDA;
+            --amber: #854F0B;
+            --pink-bg: #FBEAF0;
+            --pink: #993556;
+            --red: #E24B4A;
+            --font: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        }
+
+        body {
+            font-family: var(--font);
+            background: var(--bg);
+            color: var(--text);
+            margin: 0;
+        }
+
+        svg {
+            display: block;
+            flex-shrink: 0;
+        }
+
+        /* Top header bar */
+        .header {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 1.25rem 2rem;
+            background: var(--surface);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .logo {
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            background: var(--primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .header-text h1 {
+            font-size: 18px;
+            font-weight: 700;
+        }
+
+        .header-text p {
+            font-size: 12px;
+            color: var(--text-2);
+            margin-top: 1px;
+        }
+
+        .badge {
+            margin-left: auto;
+            font-size: 11px;
+            font-weight: 600;
+            background: var(--primary-light);
+            color: var(--primary-dark);
+            padding: 4px 12px;
+            border-radius: 20px;
+            white-space: nowrap;
+        }
+
+        .main-content {
+            padding: 2rem;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        .section {
+            margin-bottom: 2.5rem;
+        }
+
+        .section-label {
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--text-3);
+            margin-bottom: 1rem;
+        }
+
+        hr {
+            border: none;
+            border-top: 1px solid var(--border);
+            margin: 2rem 0;
+        }
+
+        .card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 1.25rem;
+        }
+
+        .two-col {
+            display: flex;
+            gap: 1.5rem;
+            align-items: flex-start;
+            flex-wrap: wrap;
+        }
+
+        .two-col>* {
+            flex: 1;
+            min-width: 280px;
+        }
+
+        .flex-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            align-items: center;
+        }
+
+        /* Swatches */
+        .swatch-wrap {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 1.25rem;
+        }
+
+        .swatch-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .swatch {
+            width: 44px;
+            height: 44px;
+            border-radius: 8px;
+            border: 1px solid rgba(0, 0, 0, 0.08);
+        }
+
+        .sw-name {
+            font-size: 10px;
+            font-weight: 600;
+            color: var(--text-2);
+        }
+
+        .sw-hex {
+            font-size: 9px;
+            color: var(--text-3);
+            font-family: monospace;
+        }
+
+        /* App shell */
+        .app-shell {
+            display: flex;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            overflow: hidden;
+            height: 460px;
+            background: var(--bg);
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.06);
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 216px;
+            min-width: 216px;
+            background: var(--surface);
+            border-right: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .sidebar-logo {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+            padding: 14px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .sidebar-logo-icon {
+            width: 30px;
+            height: 30px;
+            border-radius: 6px;
+            background: var(--primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .sidebar-logo-name {
+            font-size: 13px;
+            font-weight: 700;
+        }
+
+        .sidebar-section {
+            font-size: 10px;
+            font-weight: 700;
+            color: var(--text-3);
+            padding: 12px 14px 4px;
+            letter-spacing: 0.07em;
+            text-transform: uppercase;
+        }
+
+        .sidebar-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 7px 14px;
+            font-size: 13px;
+            color: var(--text-2);
+            cursor: pointer;
+            border-right: 2px solid transparent;
+        }
+
+        .sidebar-item.active {
+            background: var(--primary-light);
+            color: var(--primary-dark);
+            border-right-color: var(--primary);
+            font-weight: 600;
+        }
+
+        .sidebar-badge {
+            margin-left: auto;
+            font-size: 10px;
+            font-weight: 700;
+            background: var(--primary);
+            color: #fff;
+            border-radius: 20px;
+            padding: 1px 7px;
+        }
+
+        .sidebar-footer {
+            margin-top: auto;
+            padding: 10px 14px;
+            border-top: 1px solid var(--border);
+        }
+
+        .sidebar-user {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .sidebar-avatar {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: var(--primary-light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--primary-dark);
+            flex-shrink: 0;
+        }
+
+        .sidebar-user-name {
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .sidebar-user-role {
+            font-size: 10px;
+            color: var(--text-3);
+        }
+
+        /* Main */
+        .main-area {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            min-width: 0;
+        }
+
+        .topbar {
+            height: 48px;
+            background: var(--surface);
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            padding: 0 18px;
+            gap: 8px;
+            flex-shrink: 0;
+        }
+
+        .topbar-title {
+            font-size: 14px;
+            font-weight: 700;
+            flex: 1;
+        }
+
+        .btn {
+            border: none;
+            border-radius: 6px;
+            padding: 6px 14px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            font-family: var(--font);
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            white-space: nowrap;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: #fff;
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 1px solid var(--border);
+            color: var(--text-2);
+        }
+
+        .content {
+            flex: 1;
+            overflow: hidden;
+            padding: 16px 18px;
+        }
+
+        /* Tabs */
+        .tabs {
+            display: flex;
+            border-bottom: 1px solid var(--border);
+            margin-bottom: 14px;
+        }
+
+        .tab {
+            font-size: 12px;
+            padding: 7px 14px;
+            color: var(--text-2);
+            border-bottom: 2px solid transparent;
+            margin-bottom: -1px;
+            cursor: pointer;
+        }
+
+        .tab.active {
+            color: var(--primary);
+            border-bottom-color: var(--primary);
+            font-weight: 600;
+        }
+
+        /* Table */
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 12px;
+        }
+
+        .table th {
+            text-align: left;
+            font-size: 10px;
+            font-weight: 700;
+            color: var(--text-3);
+            text-transform: uppercase;
+            letter-spacing: 0.07em;
+            padding: 0 10px 8px;
+            border-bottom: 1px solid var(--border);
+            white-space: nowrap;
+        }
+
+        .table td {
+            padding: 9px 10px;
+            border-bottom: 1px solid var(--border);
+            vertical-align: middle;
+        }
+
+        .table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .table tr.archived td {
+            opacity: 0.55;
+        }
+
+        .event-name {
+            font-weight: 600;
+        }
+
+        .badge {
+            font-size: 10px;
+            font-weight: 700;
+            padding: 2px 9px;
+            border-radius: 20px;
+            white-space: nowrap;
+        }
+
+        .b-active {
+            background: var(--primary-light);
+            color: var(--primary-dark);
+        }
+
+        .b-archived {
+            background: var(--bg);
+            color: var(--text-3);
+            border: 1px solid var(--border);
+        }
+
+        .b-recurring {
+            background: var(--green-bg);
+            color: var(--green);
+        }
+
+        .b-range {
+            background: var(--amber-bg);
+            color: var(--amber);
+        }
+
+        .b-custom {
+            background: var(--pink-bg);
+            color: var(--pink);
+        }
+
+        .row-actions {
+            display: flex;
+            gap: 4px;
+        }
+
+        .icon-btn {
+            width: 26px;
+            height: 26px;
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid var(--border);
+            background: transparent;
+            cursor: pointer;
+            color: var(--text-2);
+        }
+
+        /* Type */
+        .type-row {
+            margin-bottom: 1rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .type-row:last-child {
+            margin-bottom: 0;
+            padding-bottom: 0;
+            border-bottom: none;
+        }
+
+        .type-label {
+            font-size: 10px;
+            font-weight: 600;
+            color: var(--text-3);
+            margin-bottom: 4px;
+            font-family: monospace;
+        }
+
+        .radius-row {
+            display: flex;
+            gap: 16px;
+            align-items: flex-end;
+            flex-wrap: wrap;
+        }
+
+        .r-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .r-box {
+            background: var(--primary-light);
+            border: 1.5px solid #B5D4F4;
+            height: 32px;
+        }
+
+        .r-label {
+            font-size: 10px;
+            color: var(--text-3);
+        }
+
+        footer {
+            margin-top: 3rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--border);
+            font-size: 10px;
+            color: var(--text-3);
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="header">
+        <div class="logo">
+            <!-- Lucide: door-open -->
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round">
+                <path d="M13 4h3a2 2 0 0 1 2 2v14" />
+                <path d="M2 20h3" />
+                <path d="M13 20h9" />
+                <path d="M10 12v.01" />
+                <path d="M13 4.562v16.157a1 1 0 0 1-1.242.97L5 20V5.562a2 2 0 0 1 1.515-1.94l4-1A2 2 0 0 1 13 4.561Z" />
+            </svg>
+        </div>
+        <div class="header-text">
+            <h1>VisitLog</h1>
+            <p>Frontend Styleguide — Digital Visitor Tracking System</p>
+        </div>
+        <span class="badge">Business · Desktop-first · Light + Dark Mode</span>
+    </div>
+
+    <div class="main-content">
+
+        <div class="section">
+            <div class="section-label">Konzept</div>
+            <div class="card">
+                <p style="font-size:13px;color:var(--text-2);line-height:1.7;">Business-first, klar, ruhig. shadcn/ui
+                    New York style als Basis — verfeinert, nicht überschrieben. Kein visuelles Rauschen, maximale
+                    Lesbarkeit. App-Icon: <code
+                        style="font-size:11px;background:#f3f4f6;padding:1px 4px;border-radius:3px;">DoorOpen</code> aus
+                    <code
+                        style="font-size:11px;background:#f3f4f6;padding:1px 4px;border-radius:3px;">lucide-react</code>
+                    — weißes Icon auf blauem <code
+                        style="font-size:11px;background:#f3f4f6;padding:1px 4px;border-radius:3px;">#378ADD</code>
+                    Quadrat, border-radius 6px.</p>
+            </div>
+        </div>
+
+        <hr>
+
+        <div class="section">
+            <div class="section-label">Colors</div>
+            <div class="swatch-wrap" style="margin-bottom:1.25rem;">
+                <div class="swatch-item">
+                    <div class="swatch" style="background:#378ADD;"></div><span class="sw-name">Primary</span><span
+                        class="sw-hex">#378ADD</span>
+                </div>
+                <div class="swatch-item">
+                    <div class="swatch" style="background:#EBF4FF;border-color:#B5D4F4;"></div><span
+                        class="sw-name">P-Light</span><span class="sw-hex">#EBF4FF</span>
+                </div>
+                <div class="swatch-item">
+                    <div class="swatch" style="background:#185FA5;"></div><span class="sw-name">P-Dark</span><span
+                        class="sw-hex">#185FA5</span>
+                </div>
+                <div class="swatch-item">
+                    <div class="swatch" style="background:#F4F4F3;"></div><span class="sw-name">Page BG</span><span
+                        class="sw-hex">#F4F4F3</span>
+                </div>
+                <div class="swatch-item">
+                    <div class="swatch" style="background:#FFFFFF;"></div><span class="sw-name">Surface</span><span
+                        class="sw-hex">#FFFFFF</span>
+                </div>
+                <div class="swatch-item">
+                    <div class="swatch" style="background:#E5E3DF;"></div><span class="sw-name">Border</span><span
+                        class="sw-hex">#E5E3DF</span>
+                </div>
+                <div class="swatch-item">
+                    <div class="swatch" style="background:#E24B4A;"></div><span class="sw-name">Destructive</span><span
+                        class="sw-hex">#E24B4A</span>
+                </div>
+            </div>
+            <div class="section-label">Status & Event Type Badges</div>
+            <div class="flex-row">
+                <span class="badge b-active">Active</span>
+                <span class="badge b-archived">Archived</span>
+                <span class="badge b-recurring">Recurring</span>
+                <span class="badge b-range">Date range</span>
+                <span class="badge b-custom">Custom days</span>
+            </div>
+        </div>
+
+        <hr>
+
+        <div class="section">
+            <div class="section-label">App Shell — Desktop</div>
+            <div class="app-shell">
+
+                <div class="sidebar">
+                    <div class="sidebar-logo">
+                        <div class="sidebar-logo-icon">
+                            <!-- Lucide: door-open small -->
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"
+                                stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M13 4h3a2 2 0 0 1 2 2v14" />
+                                <path d="M2 20h3" />
+                                <path d="M13 20h9" />
+                                <path d="M10 12v.01" />
+                                <path
+                                    d="M13 4.562v16.157a1 1 0 0 1-1.242.97L5 20V5.562a2 2 0 0 1 1.515-1.94l4-1A2 2 0 0 1 13 4.561Z" />
+                            </svg>
+                        </div>
+                        <span class="sidebar-logo-name">VisitLog</span>
+                    </div>
+
+                    <div class="sidebar-section">Events</div>
+                    <div class="sidebar-item active">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#185FA5" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
+                            <line x1="16" y1="2" x2="16" y2="6" />
+                            <line x1="8" y1="2" x2="8" y2="6" />
+                            <line x1="3" y1="10" x2="21" y2="10" />
+                        </svg>
+                        All events
+                        <span class="sidebar-badge">4</span>
+                    </div>
+                    <div class="sidebar-item">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#9CA3AF" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="12" y1="5" x2="12" y2="19" />
+                            <line x1="5" y1="12" x2="19" y2="12" />
+                        </svg>
+                        New event
+                    </div>
+
+                    <div class="sidebar-section">Management</div>
+                    <div class="sidebar-item">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#9CA3AF" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+                            <circle cx="9" cy="7" r="4" />
+                            <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+                            <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+                        </svg>
+                        Users
+                    </div>
+                    <div class="sidebar-item">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#9CA3AF" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="18" y1="20" x2="18" y2="10" />
+                            <line x1="12" y1="20" x2="12" y2="4" />
+                            <line x1="6" y1="20" x2="6" y2="14" />
+                        </svg>
+                        Dashboard
+                    </div>
+
+                    <div class="sidebar-footer">
+                        <div class="sidebar-user">
+                            <div class="sidebar-avatar">AD</div>
+                            <div>
+                                <div class="sidebar-user-name">Admin</div>
+                                <div class="sidebar-user-role">admin@visitlog</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="main-area">
+                    <div class="topbar">
+                        <span class="topbar-title">Events</span>
+                        <button class="btn btn-outline">
+                            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="21 8 21 21 3 21 3 8" />
+                                <rect x="1" y="3" width="22" height="5" />
+                                <line x1="10" y1="12" x2="14" y2="12" />
+                            </svg>
+                            Archive
+                        </button>
+                        <button class="btn btn-primary">
+                            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="white"
+                                stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                <line x1="12" y1="5" x2="12" y2="19" />
+                                <line x1="5" y1="12" x2="19" y2="12" />
+                            </svg>
+                            New event
+                        </button>
+                    </div>
+
+                    <div class="content">
+                        <div class="tabs">
+                            <div class="tab active">Active</div>
+                            <div class="tab">Archived</div>
+                        </div>
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Event</th>
+                                    <th>Type</th>
+                                    <th>Status</th>
+                                    <th>Visitors today</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><span class="event-name">Museum Open Day</span></td>
+                                    <td><span class="badge b-recurring">Recurring</span></td>
+                                    <td><span class="badge b-active">Active</span></td>
+                                    <td>58</td>
+                                    <td>
+                                        <div class="row-actions">
+                                            <button class="icon-btn"><svg width="13" height="13" viewBox="0 0 24 24"
+                                                    fill="none" stroke="currentColor" stroke-width="2"
+                                                    stroke-linecap="round" stroke-linejoin="round">
+                                                    <path
+                                                        d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
+                                                    <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" />
+                                                </svg></button>
+                                            <button class="icon-btn"><svg width="13" height="13" viewBox="0 0 24 24"
+                                                    fill="none" stroke="currentColor" stroke-width="2"
+                                                    stroke-linecap="round" stroke-linejoin="round">
+                                                    <circle cx="12" cy="12" r="3" />
+                                                    <path
+                                                        d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z" />
+                                                </svg></button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><span class="event-name">Summer Exhibition</span></td>
+                                    <td><span class="badge b-range">Date range</span></td>
+                                    <td><span class="badge b-active">Active</span></td>
+                                    <td>84</td>
+                                    <td>
+                                        <div class="row-actions">
+                                            <button class="icon-btn"><svg width="13" height="13" viewBox="0 0 24 24"
+                                                    fill="none" stroke="currentColor" stroke-width="2"
+                                                    stroke-linecap="round" stroke-linejoin="round">
+                                                    <path
+                                                        d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
+                                                    <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" />
+                                                </svg></button>
+                                            <button class="icon-btn"><svg width="13" height="13" viewBox="0 0 24 24"
+                                                    fill="none" stroke="currentColor" stroke-width="2"
+                                                    stroke-linecap="round" stroke-linejoin="round">
+                                                    <circle cx="12" cy="12" r="3" />
+                                                    <path
+                                                        d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z" />
+                                                </svg></button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><span class="event-name">Workshop Series</span></td>
+                                    <td><span class="badge b-custom">Custom days</span></td>
+                                    <td><span class="badge b-active">Active</span></td>
+                                    <td>12</td>
+                                    <td>
+                                        <div class="row-actions">
+                                            <button class="icon-btn"><svg width="13" height="13" viewBox="0 0 24 24"
+                                                    fill="none" stroke="currentColor" stroke-width="2"
+                                                    stroke-linecap="round" stroke-linejoin="round">
+                                                    <path
+                                                        d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
+                                                    <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" />
+                                                </svg></button>
+                                            <button class="icon-btn"><svg width="13" height="13" viewBox="0 0 24 24"
+                                                    fill="none" stroke="currentColor" stroke-width="2"
+                                                    stroke-linecap="round" stroke-linejoin="round">
+                                                    <circle cx="12" cy="12" r="3" />
+                                                    <path
+                                                        d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z" />
+                                                </svg></button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr class="archived">
+                                    <td><span class="event-name">Spring Fair</span></td>
+                                    <td><span class="badge b-range">Date range</span></td>
+                                    <td><span class="badge b-archived">Archived</span></td>
+                                    <td>—</td>
+                                    <td>
+                                        <div class="row-actions">
+                                            <button class="icon-btn"><svg width="13" height="13" viewBox="0 0 24 24"
+                                                    fill="none" stroke="currentColor" stroke-width="2"
+                                                    stroke-linecap="round" stroke-linejoin="round">
+                                                    <polyline points="21 8 21 21 3 21 3 8" />
+                                                    <rect x="1" y="3" width="22" height="5" />
+                                                    <line x1="10" y1="12" x2="14" y2="12" />
+                                                </svg></button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <hr>
+
+        <div class="two-col">
+            <div>
+                <div class="section-label">Typography</div>
+                <div class="card">
+                    <div class="type-row">
+                        <div class="type-label">Topbar title — 14px / 700</div>
+                        <div style="font-size:14px;font-weight:700;">Events</div>
+                    </div>
+                    <div class="type-row">
+                        <div class="type-label">Table row name — 12px / 600</div>
+                        <div style="font-size:12px;font-weight:600;">Museum Open Day</div>
+                    </div>
+                    <div class="type-row">
+                        <div class="type-label">Table meta — 12px / 400</div>
+                        <div style="font-size:12px;color:var(--text-2);">Recurring · Active · 58 visitors today</div>
+                    </div>
+                    <div class="type-row">
+                        <div class="type-label">Table header — 10px / 700 uppercase</div>
+                        <div
+                            style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.07em;color:var(--text-3);">
+                            Event name</div>
+                    </div>
+                    <div class="type-row">
+                        <div class="type-label">Sidebar nav — 13px active / inactive</div>
+                        <div style="display:flex;gap:16px;"><span
+                                style="font-size:13px;font-weight:600;color:var(--primary-dark);">All events</span><span
+                                style="font-size:13px;color:var(--text-2);">Users</span></div>
+                    </div>
+                </div>
+            </div>
+
+            <div>
+                <div class="section-label">Components</div>
+                <div class="card" style="margin-bottom:1rem;">
+                    <div
+                        style="font-size:10px;font-weight:700;color:var(--text-3);margin-bottom:10px;text-transform:uppercase;letter-spacing:0.07em;">
+                        Buttons</div>
+                    <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;">
+                        <button class="btn btn-primary">
+                            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="white"
+                                stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                <line x1="12" y1="5" x2="12" y2="19" />
+                                <line x1="5" y1="12" x2="19" y2="12" />
+                            </svg>
+                            New event
+                        </button>
+                        <button class="btn btn-outline">
+                            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#6B7280"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="21 8 21 21 3 21 3 8" />
+                                <rect x="1" y="3" width="22" height="5" />
+                                <line x1="10" y1="12" x2="14" y2="12" />
+                            </svg>
+                            Archive
+                        </button>
+                        <button
+                            style="border:none;background:transparent;color:#E24B4A;font-size:12px;font-weight:600;cursor:pointer;padding:6px 4px;display:inline-flex;align-items:center;gap:4px;font-family:var(--font);">
+                            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#E24B4A"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="3 6 5 6 21 6" />
+                                <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6" />
+                                <path d="M10 11v6" />
+                                <path d="M14 11v6" />
+                                <path d="M9 6V4h6v2" />
+                            </svg>
+                            Delete
+                        </button>
+                    </div>
+                </div>
+
+                <div class="card" style="margin-bottom:1rem;">
+                    <div
+                        style="font-size:10px;font-weight:700;color:var(--text-3);margin-bottom:10px;text-transform:uppercase;letter-spacing:0.07em;">
+                        Active Sidebar Item</div>
+                    <div
+                        style="background:var(--primary-light);border-right:2px solid var(--primary);padding:7px 14px;display:flex;align-items:center;gap:8px;border-radius:4px;font-size:13px;font-weight:600;color:var(--primary-dark);">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#185FA5" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
+                            <line x1="16" y1="2" x2="16" y2="6" />
+                            <line x1="8" y1="2" x2="8" y2="6" />
+                            <line x1="3" y1="10" x2="21" y2="10" />
+                        </svg>
+                        All events
+                        <span
+                            style="margin-left:auto;font-size:10px;font-weight:700;background:var(--primary);color:#fff;border-radius:20px;padding:1px 7px;">4</span>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div
+                        style="font-size:10px;font-weight:700;color:var(--text-3);margin-bottom:10px;text-transform:uppercase;letter-spacing:0.07em;">
+                        Border Radius</div>
+                    <div class="radius-row">
+                        <div class="r-item">
+                            <div class="r-box" style="width:36px;border-radius:4px;"></div><span class="r-label">Input
+                                4px</span>
+                        </div>
+                        <div class="r-item">
+                            <div class="r-box" style="width:50px;border-radius:6px;"></div><span class="r-label">Button
+                                6px</span>
+                        </div>
+                        <div class="r-item">
+                            <div class="r-box" style="width:62px;border-radius:8px;"></div><span class="r-label">Card
+                                8px</span>
+                        </div>
+                        <div class="r-item">
+                            <div class="r-box" style="width:62px;border-radius:20px;height:22px;"></div><span
+                                class="r-label">Badge 20px</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <hr>
+
+        <div class="section">
+            <div class="section-label">Issue #15 — Styling Scope</div>
+            <div class="card">
+                <div
+                    style="display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;font-size:12px;color:var(--text-2);line-height:1.9;">
+                    <div>
+                        <strong style="color:var(--text);display:block;margin-bottom:6px;">Bestehende Pages
+                            anpassen</strong>
+                        events/index — Table header, badge colors, row actions hover<br>
+                        events/show — Topbar actions, destructive delete, Sheet<br>
+                        events/create — 2-col form, section headings<br>
+                        app-sidebar — DoorOpen icon, active state, section labels<br>
+                        auth/login — centered card, logo, primary button
+                    </div>
+                    <div>
+                        <strong style="color:var(--text);display:block;margin-bottom:6px;">Neue Komponenten</strong>
+                        &lt;EventTypeBadge /&gt; — Farbe aus EventType Enum<br>
+                        &lt;EventStatusBadge /&gt; — Farbe aus EventStatus Enum<br>
+                        &lt;PageHeader /&gt; — Topbar mit Title + Actions Slot<br>
+                        &lt;ConfirmDialog /&gt; — AlertDialog für Delete/Archive
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            <span>VisitLog Styleguide — docs/styleguide-visitlog.html</span>
+            <span>Laravel 13 · Inertia · React · shadcn/ui New York · Blue #378ADD · DoorOpen (lucide-react)</span>
+        </footer>
+
+    </div>
+</body>
+</html>
